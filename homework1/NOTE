@@ -1,0 +1,10 @@
+Cloning https://github.com/tatia2501/IS-2020-prog-2-sem/homework1
+Cloning finished
+It's OK
+main.cpp: In function 'void PolygonsCheck()':
+main.cpp:47:12: warning: deleting object of polymorphic class type 'Trapezoid' which has non-virtual destructor might cause undefined behavior [-Wdelete-non-virtual-dtor]
+   47 |     delete trap;
+      |            ^~~~
+
+
+
