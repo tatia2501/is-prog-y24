@@ -30,7 +30,7 @@ public:
 	PolygonalChain(const PolygonalChain& other);
 	PolygonalChain& operator=(const PolygonalChain& other);
 	void setPolygonalChain(int n1, Point* points1);
-
+//todo default destructor
 	int getN() const {
 		return n;
 	}

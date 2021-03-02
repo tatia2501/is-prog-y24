@@ -47,6 +47,7 @@ PolygonalChain& PolygonalChain::operator=(const PolygonalChain& other) {
 		return *this;
 
 	n = other.n;
+	//todo memory leak
 	points = new Point[n];
 	for (int i = 0; i < n; i++) {
 		points[i] = other.points[i];
@@ -54,6 +55,7 @@ PolygonalChain& PolygonalChain::operator=(const PolygonalChain& other) {
 	return *this;
 }
 
+//todo move to constructor
 void PolygonalChain::setPolygonalChain(int n1, Point* points1) {
 	n = n1;
 	points = new Point[n];
@@ -80,6 +82,7 @@ ClosedPolygonalChain& ClosedPolygonalChain::operator=(const ClosedPolygonalChain
 }
 
 double ClosedPolygonalChain::perimeter() const {
+	//todo copy-paste, use from base class
 	double per = 0;
 	double piece;
 	for (int i = 1; i < n; i++) {
@@ -99,6 +102,7 @@ Polygon& Polygon::operator=(const Polygon& other) {
 }
 
 double Polygon::area() const {
+	//todo remove doubles
 	double res = 0;
 	double mult;
 	for (int i = 1; i < n; i++) {
@@ -123,7 +127,7 @@ Triangle& Triangle::operator=(const Triangle& other) {
 	Polygon::operator=(other);
 	return *this;
 }
-
+//todo without sqrt
 int Triangle::hasRightAngle() const {
 	double side1, side2, side3;
 	side1 = pow((sqrt(pow((points[0].getX() - points[1].getX()), 2) + pow((points[0].getY() - points[1].getY()), 2))), 2);
@@ -165,6 +169,7 @@ double Trapezoid::height() const {
 	return H;
 }
 
+//todo area and perimeter
 RegularPolygon::RegularPolygon(const RegularPolygon& other) : Polygon(other) {}
 
 RegularPolygon& RegularPolygon::operator=(const RegularPolygon& other) {
