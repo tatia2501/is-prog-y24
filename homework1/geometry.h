@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-//Точка
+//РўРѕС‡РєР°
 class Point {
 private:
 	int x;
@@ -11,7 +11,6 @@ public:
 	Point(int x1, int y1);
 	Point(const Point& other);
 	Point& operator=(const Point& other);
-	void setPoint(int x1, int y1);
 
 	int getX() const {
 		return x;
@@ -21,7 +20,7 @@ public:
 	}
 };
 
-//Ломаная
+//Р›РѕРјР°РЅР°СЏ
 class PolygonalChain {
 public:
 	int n;
@@ -29,8 +28,9 @@ public:
 	PolygonalChain(int n1, Point* points1);
 	PolygonalChain(const PolygonalChain& other);
 	PolygonalChain& operator=(const PolygonalChain& other);
-	void setPolygonalChain(int n1, Point* points1);
-//todo destructor
+//fixed destructor
+	~PolygonalChain();
+
 	int getN() const {
 		return n;
 	}
@@ -41,7 +41,7 @@ public:
 	virtual double perimeter() const;
 };
 
-//Замкнутая ломаная
+//Р—Р°РјРєРЅСѓС‚Р°СЏ Р»РѕРјР°РЅР°СЏ
 class ClosedPolygonalChain : public PolygonalChain {
 public:
 	ClosedPolygonalChain(
@@ -52,6 +52,8 @@ public:
 	{}
 	ClosedPolygonalChain(const ClosedPolygonalChain& other);
 	ClosedPolygonalChain& operator=(const ClosedPolygonalChain& other);
+	~ClosedPolygonalChain();
+
 	virtual double perimeter() const;
 	int getN() const {
 		return n;
@@ -61,7 +63,7 @@ public:
 	}
 };
 
-//Многоугольник
+//РњРЅРѕРіРѕСѓРіРѕР»СЊРЅРёРє
 class Polygon : public ClosedPolygonalChain {
 public:
 	Polygon(
@@ -72,10 +74,11 @@ public:
 	{}
 	Polygon(const Polygon& other);
 	Polygon& operator=(const Polygon& other);
+	~Polygon();
 	virtual double area() const;
 };
 
-//Треугольник
+//РўСЂРµСѓРіРѕР»СЊРЅРёРє
 class Triangle : public Polygon {
 public:
 	Triangle(
@@ -86,10 +89,11 @@ public:
 	{}
 	Triangle(const Triangle& other);
 	Triangle& operator=(const Triangle& other);
+	~Triangle();
 	int hasRightAngle() const;
 };
 
-//Трапеция
+//РўСЂР°РїРµС†РёСЏ
 class Trapezoid : public Polygon {
 public:
 	Trapezoid(
@@ -100,10 +104,11 @@ public:
 	{}
 	Trapezoid(const Trapezoid& other);
 	Trapezoid& operator=(const Trapezoid& other);
+	~Trapezoid();
 	double height() const;
 };
 
-//Правильный многоугольник
+//РџСЂР°РІРёР»СЊРЅС‹Р№ РјРЅРѕРіРѕСѓРіРѕР»СЊРЅРёРє
 class RegularPolygon : public Polygon {
 public:
 	RegularPolygon(
@@ -114,6 +119,9 @@ public:
 	{}
 	RegularPolygon(const RegularPolygon& other);
 	RegularPolygon& operator=(const RegularPolygon& other);
+	~RegularPolygon();
+	double area() const;
+	double perimeter() const;
 };
 
 #endif
