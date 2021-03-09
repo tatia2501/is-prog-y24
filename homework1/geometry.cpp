@@ -68,7 +68,7 @@ double PolygonalChain::perimeter() const {
 
 PolygonalChain::~PolygonalChain() {
 	delete[] points;
-	points = nullptr;
+//	points = nullptr;
 }
 
 ClosedPolygonalChain::ClosedPolygonalChain(const ClosedPolygonalChain& other) : PolygonalChain(other) {}
@@ -88,6 +88,7 @@ double ClosedPolygonalChain::perimeter() const {
 	return per;
 }
 
+//todo one destructor to rule them all
 ClosedPolygonalChain::~ClosedPolygonalChain() {
 	delete[] points;
 	points = nullptr;
@@ -101,7 +102,7 @@ Polygon& Polygon::operator=(const Polygon& other) {
 }
 
 double Polygon::area() const {
-	//fixed remove doubles
+	//todo remove doubles
 	double res = 0;
 	int mult;
 	for (int i = 1; i < n; i++) {
@@ -133,11 +134,13 @@ Triangle& Triangle::operator=(const Triangle& other) {
 }
 
 //fixed without sqrt
+//todo bool
 int Triangle::hasRightAngle() const {
 	double side1, side2, side3;
 	side1 = pow((points[0].getX() - points[1].getX()), 2) + pow((points[0].getY() - points[1].getY()), 2);
 	side2 = pow((points[2].getX() - points[1].getX()), 2) + pow((points[2].getY() - points[1].getY()), 2);
 	side3 = pow((points[2].getX() - points[0].getX()), 2) + pow((points[2].getY() - points[0].getY()), 2);
+	//todo return expression
 	if (side1 + side2 == side3 || side1 + side3 == side2 || side2 + side3 == side1) {
 		return 1;
 	}
@@ -155,12 +158,13 @@ Trapezoid& Trapezoid::operator=(const Trapezoid& other) {
 	Polygon::operator=(other);
 	return *this;
 }
-
+//todo area from base class
 double Trapezoid::height() const {
 	double a = sqrt(pow((points[1].getX() - points[2].getX()), 2) + pow((points[1].getY() - points[2].getY()), 2));
 	double b = sqrt(pow((points[0].getX() - points[3].getX()), 2) + pow((points[0].getY() - points[3].getY()), 2));
 	double res = 0;
 	double mult;
+	
 	for (int i = 1; i < n; i++) {
 		mult = (double)points[i - 1].getX() * (double)points[i].getY();
 		res = res + mult;
@@ -184,7 +188,6 @@ Trapezoid::~Trapezoid() {
 	points = nullptr;
 }
 
-//fixed area and perimeter
 RegularPolygon::RegularPolygon(const RegularPolygon& other) : Polygon(other) {}
 
 RegularPolygon& RegularPolygon::operator=(const RegularPolygon& other) {
@@ -198,6 +201,7 @@ double RegularPolygon::perimeter() const {
 	return piece*n;
 }
 
+//todo const 
 double RegularPolygon::area() const {
 	double piece;
 	piece = sqrt(pow((points[1].getX() - points[0].getX()), 2) + pow((points[1].getY() - points[0].getY()), 2));

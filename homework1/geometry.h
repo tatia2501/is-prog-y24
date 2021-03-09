@@ -27,6 +27,7 @@ public:
 	PolygonalChain(const PolygonalChain& other);
 	PolygonalChain& operator=(const PolygonalChain& other);
 //fixed destructor
+//todo destructor virtual
 	~PolygonalChain();
 
 	int getN() const {
