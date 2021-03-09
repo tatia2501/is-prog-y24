@@ -26,9 +26,9 @@ public:
 	PolygonalChain(int n1, Point* points1);
 	PolygonalChain(const PolygonalChain& other);
 	PolygonalChain& operator=(const PolygonalChain& other);
-//fixed destructor
-//todo destructor virtual
-	~PolygonalChain();
+	//fixed destructor
+	//fixed destructor virtual
+	virtual ~PolygonalChain();
 
 	int getN() const {
 		return n;
@@ -50,7 +50,6 @@ public:
 	{}
 	ClosedPolygonalChain(const ClosedPolygonalChain& other);
 	ClosedPolygonalChain& operator=(const ClosedPolygonalChain& other);
-	~ClosedPolygonalChain();
 
 	virtual double perimeter() const;
 	int getN() const {
@@ -71,7 +70,6 @@ public:
 	{}
 	Polygon(const Polygon& other);
 	Polygon& operator=(const Polygon& other);
-	~Polygon();
 	virtual double area() const;
 };
 
@@ -85,8 +83,7 @@ public:
 	{}
 	Triangle(const Triangle& other);
 	Triangle& operator=(const Triangle& other);
-	~Triangle();
-	int hasRightAngle() const;
+	bool hasRightAngle() const;
 };
 
 class Trapezoid : public Polygon {
@@ -99,7 +96,6 @@ public:
 	{}
 	Trapezoid(const Trapezoid& other);
 	Trapezoid& operator=(const Trapezoid& other);
-	~Trapezoid();
 	double height() const;
 };
 
@@ -113,7 +109,6 @@ public:
 	{}
 	RegularPolygon(const RegularPolygon& other);
 	RegularPolygon& operator=(const RegularPolygon& other);
-	~RegularPolygon();
 	double area() const;
 	double perimeter() const;
 };
