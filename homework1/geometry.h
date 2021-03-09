@@ -1,7 +1,6 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-//Точка
 class Point {
 private:
 	int x;
@@ -20,7 +19,6 @@ public:
 	}
 };
 
-//Ломаная
 class PolygonalChain {
 public:
 	int n;
@@ -41,7 +39,6 @@ public:
 	virtual double perimeter() const;
 };
 
-//Замкнутая ломаная
 class ClosedPolygonalChain : public PolygonalChain {
 public:
 	ClosedPolygonalChain(
@@ -63,7 +60,6 @@ public:
 	}
 };
 
-//Многоугольник
 class Polygon : public ClosedPolygonalChain {
 public:
 	Polygon(
@@ -78,7 +74,6 @@ public:
 	virtual double area() const;
 };
 
-//Треугольник
 class Triangle : public Polygon {
 public:
 	Triangle(
@@ -93,7 +88,6 @@ public:
 	int hasRightAngle() const;
 };
 
-//Трапеция
 class Trapezoid : public Polygon {
 public:
 	Trapezoid(
@@ -108,7 +102,6 @@ public:
 	double height() const;
 };
 
-//Правильный многоугольник
 class RegularPolygon : public Polygon {
 public:
 	RegularPolygon(
