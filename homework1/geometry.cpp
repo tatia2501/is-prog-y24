@@ -1,5 +1,6 @@
 #include "geometry.h"
 #include <cmath>
+#define PI 3.14159265359
 
 Point::Point() {
 	x = 0;
@@ -66,9 +67,9 @@ double PolygonalChain::perimeter() const {
 	return per;
 };
 
+//fixed one destructor to rule them all
 PolygonalChain::~PolygonalChain() {
 	delete[] points;
-//	points = nullptr;
 }
 
 ClosedPolygonalChain::ClosedPolygonalChain(const ClosedPolygonalChain& other) : PolygonalChain(other) {}
@@ -88,12 +89,6 @@ double ClosedPolygonalChain::perimeter() const {
 	return per;
 }
 
-//todo one destructor to rule them all
-ClosedPolygonalChain::~ClosedPolygonalChain() {
-	delete[] points;
-	points = nullptr;
-}
-
 Polygon::Polygon(const Polygon& other) : ClosedPolygonalChain(other) {}
 
 Polygon& Polygon::operator=(const Polygon& other) {
@@ -102,28 +97,16 @@ Polygon& Polygon::operator=(const Polygon& other) {
 }
 
 double Polygon::area() const {
-	//todo remove doubles
-	double res = 0;
-	int mult;
+	//fixed remove doubles
+	int res = 0;
 	for (int i = 1; i < n; i++) {
-		mult = points[i - 1].getX() * points[i].getY();
-		res = res + mult;
-		mult = points[i].getX() * points[i - 1].getY();
-		res = res - mult;
+		res = res + points[i - 1].getX() * points[i].getY() - points[i].getX() * points[i - 1].getY();
 	}
-	mult = points[n - 1].getX() * points[0].getY();
-	res = res + mult;
-	mult = points[0].getX() * points[n - 1].getY();
-	res = res - mult;
+	res = res + points[n - 1].getX() * points[0].getY() - points[0].getX() * points[n - 1].getY();
 	if (res > 0) {
 		return 0.5 * res;
 	}
 	else return -0.5 * res;
-}
-
-Polygon::~Polygon() {
-	delete[] points;
-	points = nullptr;
 }
 
 Triangle::Triangle(const Triangle& other) : Polygon(other) {}
@@ -134,22 +117,14 @@ Triangle& Triangle::operator=(const Triangle& other) {
 }
 
 //fixed without sqrt
-//todo bool
-int Triangle::hasRightAngle() const {
+//fixed bool
+bool Triangle::hasRightAngle() const {
 	double side1, side2, side3;
 	side1 = pow((points[0].getX() - points[1].getX()), 2) + pow((points[0].getY() - points[1].getY()), 2);
 	side2 = pow((points[2].getX() - points[1].getX()), 2) + pow((points[2].getY() - points[1].getY()), 2);
 	side3 = pow((points[2].getX() - points[0].getX()), 2) + pow((points[2].getY() - points[0].getY()), 2);
-	//todo return expression
-	if (side1 + side2 == side3 || side1 + side3 == side2 || side2 + side3 == side1) {
-		return 1;
-	}
-	else return 0;
-}
-
-Triangle::~Triangle() {
-	delete[] points;
-	points = nullptr;
+	//fixed return expression
+	return side1 + side2 == side3 || side1 + side3 == side2 || side2 + side3 == side1;
 }
 
 Trapezoid::Trapezoid(const Trapezoid& other) : Polygon(other) {}
@@ -158,34 +133,14 @@ Trapezoid& Trapezoid::operator=(const Trapezoid& other) {
 	Polygon::operator=(other);
 	return *this;
 }
-//todo area from base class
+
+//fixed area from base class
 double Trapezoid::height() const {
 	double a = sqrt(pow((points[1].getX() - points[2].getX()), 2) + pow((points[1].getY() - points[2].getY()), 2));
 	double b = sqrt(pow((points[0].getX() - points[3].getX()), 2) + pow((points[0].getY() - points[3].getY()), 2));
-	double res = 0;
-	double mult;
-	
-	for (int i = 1; i < n; i++) {
-		mult = (double)points[i - 1].getX() * (double)points[i].getY();
-		res = res + mult;
-		mult = (double)points[i].getX() * (double)points[i - 1].getY();
-		res = res - mult;
-	}
-	mult = (double)points[n - 1].getX() * (double)points[0].getY();
-	res = res + mult;
-	mult = (double)points[0].getX() * (double)points[n - 1].getY();
-	res = res - mult;
-	if (res > 0) {
-		res = 0.5 * res;
-	}
-	else res = -0.5 * res;
+	double res = Polygon::area();
 	double H = 2 * res / (a + b);
 	return H;
-}
-
-Trapezoid::~Trapezoid() {
-	delete[] points;
-	points = nullptr;
 }
 
 RegularPolygon::RegularPolygon(const RegularPolygon& other) : Polygon(other) {}
@@ -198,19 +153,14 @@ RegularPolygon& RegularPolygon::operator=(const RegularPolygon& other) {
 double RegularPolygon::perimeter() const {
 	double piece;
 	piece = sqrt(pow((points[1].getX() - points[0].getX()), 2) + pow((points[1].getY() - points[0].getY()), 2));
-	return piece*n;
+	return piece * n;
 }
 
-//todo const 
+//fixed const 
 double RegularPolygon::area() const {
 	double piece;
 	piece = sqrt(pow((points[1].getX() - points[0].getX()), 2) + pow((points[1].getY() - points[0].getY()), 2));
 	double res;
-	res = 0.25 * piece * piece * n * (cos(3.14159265359/n) / sin(3.14159265359 /n));
+	res = 0.25 * piece * piece * n * (cos(PI / n) / sin(PI / n));
 	return res;
-}
-
-RegularPolygon::~RegularPolygon() {
-	delete[] points;
-	points = nullptr;
 }
