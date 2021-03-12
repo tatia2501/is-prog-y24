@@ -48,7 +48,6 @@ PolygonalChain& PolygonalChain::operator=(const PolygonalChain& other) {
 		return *this;
 
 	n = other.n;
-	//fixed memory leak
 	delete[] points;
 	points = new Point[n];
 	for (int i = 0; i < n; i++) {
@@ -67,7 +66,6 @@ double PolygonalChain::perimeter() const {
 	return per;
 };
 
-//fixed one destructor to rule them all
 PolygonalChain::~PolygonalChain() {
 	delete[] points;
 }
@@ -80,7 +78,6 @@ ClosedPolygonalChain& ClosedPolygonalChain::operator=(const ClosedPolygonalChain
 }
 
 double ClosedPolygonalChain::perimeter() const {
-	//fixed copy-paste, use from base class
 	double per;
 	double piece;
 	per = PolygonalChain::perimeter();
@@ -97,12 +94,12 @@ Polygon& Polygon::operator=(const Polygon& other) {
 }
 
 double Polygon::area() const {
-	//fixed remove doubles
 	int res = 0;
 	for (int i = 1; i < n; i++) {
 		res = res + points[i - 1].getX() * points[i].getY() - points[i].getX() * points[i - 1].getY();
 	}
 	res = res + points[n - 1].getX() * points[0].getY() - points[0].getX() * points[n - 1].getY();
+	//todo mb you need abs function
 	if (res > 0) {
 		return 0.5 * res;
 	}
@@ -116,14 +113,11 @@ Triangle& Triangle::operator=(const Triangle& other) {
 	return *this;
 }
 
-//fixed without sqrt
-//fixed bool
 bool Triangle::hasRightAngle() const {
 	double side1, side2, side3;
 	side1 = pow((points[0].getX() - points[1].getX()), 2) + pow((points[0].getY() - points[1].getY()), 2);
 	side2 = pow((points[2].getX() - points[1].getX()), 2) + pow((points[2].getY() - points[1].getY()), 2);
 	side3 = pow((points[2].getX() - points[0].getX()), 2) + pow((points[2].getY() - points[0].getY()), 2);
-	//fixed return expression
 	return side1 + side2 == side3 || side1 + side3 == side2 || side2 + side3 == side1;
 }
 
@@ -139,6 +133,7 @@ double Trapezoid::height() const {
 	double a = sqrt(pow((points[1].getX() - points[2].getX()), 2) + pow((points[1].getY() - points[2].getY()), 2));
 	double b = sqrt(pow((points[0].getX() - points[3].getX()), 2) + pow((points[0].getY() - points[3].getY()), 2));
 	double res = Polygon::area();
+	//todo dont use capital letters for variables
 	double H = 2 * res / (a + b);
 	return H;
 }
@@ -152,11 +147,12 @@ RegularPolygon& RegularPolygon::operator=(const RegularPolygon& other) {
 
 double RegularPolygon::perimeter() const {
 	double piece;
+	//todo i think you need function for it
 	piece = sqrt(pow((points[1].getX() - points[0].getX()), 2) + pow((points[1].getY() - points[0].getY()), 2));
 	return piece * n;
 }
 
-//fixed const 
+
 double RegularPolygon::area() const {
 	double piece;
 	piece = sqrt(pow((points[1].getX() - points[0].getX()), 2) + pow((points[1].getY() - points[0].getY()), 2));
