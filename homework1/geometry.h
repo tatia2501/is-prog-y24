@@ -113,4 +113,6 @@ public:
 	double perimeter() const;
 };
 
+double segment(Point point1, Point point2);
+
 #endif
