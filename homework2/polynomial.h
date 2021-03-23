@@ -19,7 +19,7 @@ public:
 	friend bool operator==(const Polynomial& pol1, const Polynomial& pol2);
 	friend bool operator!=(const Polynomial& pol1, const Polynomial& pol2);
 
-	int& operator[](int num) const;
+	int operator[](int num) const;
 	int& operator[](int num);
 
 	friend Polynomial operator+(const Polynomial& pol1, const Polynomial& pol2);
