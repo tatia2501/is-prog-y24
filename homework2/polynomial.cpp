@@ -134,20 +134,14 @@ Polynomial operator-(const Polynomial& other) {
 
 Polynomial operator/(const Polynomial& other, int num) {
 	Polynomial res(other.mindeg, other.maxdeg, other.factors);
-	for (int i = 0; i < res.n; i++) {
-		res.factors[i] /= num;
-	}
-	return res.zerocheck();
+	res /= num;
+	return res;
 }
 
 Polynomial operator*(int num, const Polynomial& other) {
-	if (num != 0) {
-		Polynomial res(other.mindeg, other.maxdeg, other.factors);
-		for (int i = 0; i < other.n; i++) {
-			res.factors[i] *= num;
-		}
-		return res;
-	} else return Polynomial();
+	Polynomial res(other.mindeg, other.maxdeg, other.factors);
+	res *= num;
+	return res;
 }
 
 Polynomial operator*(const Polynomial& other, int num) {
@@ -155,23 +149,8 @@ Polynomial operator*(const Polynomial& other, int num) {
 }
 
 Polynomial operator*(const Polynomial& pol1, const Polynomial& pol2) {
-	if (pol1.n == 0 || pol2.n == 0) {
-		return Polynomial();
-	}
-	Polynomial res = Polynomial();
-	res.mindeg = pol1.mindeg + pol2.mindeg;
-	res.maxdeg = pol1.maxdeg + pol2.maxdeg;
-	res.n = res.maxdeg - res.mindeg + 1;
-	delete[] res.factors;
-	res.factors = new int[res.n];
-	for (int i = 0; i < res.n; i++) {
-		res.factors[i] = 0;
-	}
-	for (int i = 0; i < pol1.n; i++) {
-		for (int j = 0; j < pol2.n; j++) {
-			res.factors[i + j] += pol2.factors[j] * pol1.factors[i];
-		}
-	}
+	Polynomial res(pol1.mindeg, pol1.maxdeg, pol1.factors);
+	res *= pol2;
 	return res;
 }
 
@@ -215,22 +194,57 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 }
 
 Polynomial& Polynomial::operator-=(const Polynomial& other) {
-	*this = *this - other;
+	*this += (-1) * other;
 	return *this;
 }
 
 Polynomial& Polynomial::operator*=(const Polynomial& other) {
-	*this = *this * other;
+	if (n == 0 || other.n == 0) {
+		*this = Polynomial();
+		return *this;
+	}
+	int min = mindeg + other.mindeg;
+	int max = maxdeg + other.maxdeg;
+	int size = max - min + 1;
+	int* help = new int[size];
+	for (int i = 0; i < size; i++) {
+		help[i] = 0;
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < other.n; j++) {
+			help[i + j] += other.factors[j] * factors[i];
+		}
+	}
+	delete[]factors;
+	factors = new int[size];
+	for (int i = 0; i < size; i++) {
+		factors[i] = help[i];
+	}
+	delete[]help;
+	mindeg = min;
+	maxdeg = max;
+	n = size;
 	return *this;
 }
 
 Polynomial& Polynomial::operator*=(int num) {
-	*this = *this * num;
-	return *this;
+	if (num != 0) {
+		for (int i = 0; i < n; i++) {
+			factors[i] *= num;
+		}
+		return *this;
+	}
+	else {
+		*this = Polynomial();
+		return *this;
+	}
 }
 
 Polynomial& Polynomial::operator/=(int num) {
-	*this = *this / num;
+	for (int i = 0; i < n; i++) {
+		factors[i] /= num;
+	}
+	*this = zerocheck();
 	return *this;
 }
 
