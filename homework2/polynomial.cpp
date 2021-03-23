@@ -248,11 +248,11 @@ Polynomial& Polynomial::operator/=(int num) {
 }
 
 double Polynomial::get(int num) {
-	double res = 0;
-	int j = mindeg;
-	for (int i = 0; i < n; i++) {
-		res += factors[i] * pow(num, j);
-		j++;
+	double j = pow(num, mindeg);
+	double res = j * factors[0];
+	for (int i = 1; i < n; i++) {
+		j *= num;
+		res += factors[i] * j;
 	}
 	return res;
 }
