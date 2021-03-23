@@ -192,6 +192,7 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 	return *this;
 }
 
+//todo without creating new object
 Polynomial& Polynomial::operator-=(const Polynomial& other) {
 	*this += (-1) * other;
 	return *this;
