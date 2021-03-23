@@ -119,34 +119,8 @@ int& Polynomial::operator[](int num) {
 }
 
 Polynomial operator+(const Polynomial& pol1, const Polynomial& pol2) {
-	if (pol1.n == 0) {
-		return pol2;
-	}
-	if (pol2.n == 0) {
-		return pol1;
-	}
-	Polynomial res = Polynomial();
-	if (pol1.mindeg < pol2.mindeg) {
-		res.mindeg = pol1.mindeg;
-	} else res.mindeg = pol2.mindeg;
-	if (pol2.maxdeg < pol1.maxdeg) {
-		res.maxdeg = pol1.maxdeg;
-	} else res.maxdeg = pol2.maxdeg;
-
-	res.n = res.maxdeg - res.mindeg + 1;
-
-	delete[]res.factors;
-	res.factors = new int[res.n];
-	for (int i = 0; i < res.n; i++) {
-		res.factors[i] = 0;
-	}
-
-	for (int i = 0; i < pol1.n; i++) {
-		res.factors[pol1.mindeg - res.mindeg + i] += pol1.factors[i];
-	}
-	for (int i = 0; i < pol2.n; i++) {
-		res.factors[pol2.mindeg - res.mindeg + i] += pol2.factors[i];
-	}
+	Polynomial res(pol1.mindeg, pol1.maxdeg, pol1.factors);
+	res += pol2;
 	return res;
 }
 
@@ -201,13 +175,47 @@ Polynomial operator*(const Polynomial& pol1, const Polynomial& pol2) {
 	return res;
 }
 
-Polynomial& Polynomial::operator-=(const Polynomial& other) {
-	*this = *this - other;
+Polynomial& Polynomial::operator+=(const Polynomial& other) {
+	if (n == 0) {
+		*this = other;
+		return *this;
+	}
+	if (other.n == 0) {
+		return *this;
+	}
+	int min, max;
+	if (mindeg < other.mindeg) {
+		min = mindeg;
+	} else min = other.mindeg;
+	if (other.maxdeg < maxdeg) {
+		max = maxdeg;
+	} else max = other.maxdeg;
+
+	int size = max - min + 1;
+	int* help = new int[size];
+	for (int i = 0; i < size; i++) {
+		help[i] = 0;
+	}
+	for (int i = 0; i < n; i++) {
+		help[mindeg - min + i] += factors[i];
+	}
+	for (int i = 0; i < other.n; i++) {
+		help[other.mindeg - min + i] += other.factors[i];
+	}
+	delete[]factors;
+	factors = new int[size];
+	for (int i = 0; i < size; i++) {
+		factors[i] = help[i];
+	}
+	delete[]help;
+	mindeg = min;
+	maxdeg = max;
+	n = size;
 	return *this;
 }
 
-Polynomial& Polynomial::operator+=(const Polynomial& other) {
-	*this = *this + other;
+Polynomial& Polynomial::operator-=(const Polynomial& other) {
+	*this = *this - other;
 	return *this;
 }
 
@@ -237,31 +245,30 @@ double Polynomial::get(int num) {
 }
 
 Polynomial Polynomial::zerocheck() {
-	Polynomial res(mindeg, maxdeg, factors);
-	int i = res.n - 1;
-	while (res.factors[i] == 0 && i > -1) i--;
+	int i = n - 1;
+	while (factors[i] == 0 && i > -1) i--;
 
 	if (i == -1) {
-		Polynomial res = Polynomial();
+		*this = Polynomial();
 	}
 	else {
-		res.maxdeg = i + res.mindeg;
+		maxdeg = i + mindeg;
 		i = 0;
-		while (res.factors[i] == 0) i++;
-		res.mindeg += i;
-		res.n = res.maxdeg - res.mindeg + 1;
-		int* help = new int[res.n];
-		for (int j = 0; j < res.n; j++) {
-			help[j] = res.factors[j + i];
+		while (factors[i] == 0) i++;
+		mindeg += i;
+		n = maxdeg - mindeg + 1;
+		int* help = new int[n];
+		for (int j = 0; j < n; j++) {
+			help[j] = factors[j + i];
 		}
-		delete[]res.factors;
-		res.factors = new int[res.n];
-		for (i = 0; i < res.n; i++) {
-			res.factors[i] = help[i];
+		delete[]factors;
+		factors = new int[n];
+		for (i = 0; i < n; i++) {
+			factors[i] = help[i];
 		}
 		delete[]help;
 	}
-	return res;
+	return *this;
 }
 
 std::ostream& operator<<(std::ostream& stream, const Polynomial& other) {
@@ -313,11 +320,11 @@ std::ostream& operator<<(std::ostream& stream, const Polynomial& other) {
 						}
 					}
 				}
-				if (other.mindeg + i == 1) {
+				if (other.mindeg + i != 0) {
 					stream << 'x';
-				}
-				else if (other.mindeg + i != 0) {
-					stream << "x^" << other.mindeg + i;
+					if (other.mindeg + i != 1) {
+						stream << '^' << other.mindeg + i;
+					}
 				}
 			}
 		}
