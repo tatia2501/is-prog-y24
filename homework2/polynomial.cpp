@@ -69,10 +69,9 @@ bool operator!=(const Polynomial& pol1, const Polynomial& pol2) {
 	return !(pol1 == pol2);
 }
 
-int& Polynomial::operator[](int num) const {
+int Polynomial::operator[](int num) const {
 	if ((num > maxdeg) || (num < mindeg)) {
-		int help = 0;
-		return help;
+		return 0;
 	}
 	else return factors[num - mindeg];
 }
