@@ -192,7 +192,7 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 	return *this;
 }
 
-//fixed without creating new object
+//todo copy-paste
 Polynomial& Polynomial::operator-=(const Polynomial& other) {
 	if (n == 0) {
 		*this = other;
@@ -277,6 +277,7 @@ Polynomial& Polynomial::operator*=(int num) {
 }
 
 Polynomial& Polynomial::operator/=(int num) {
+	//todo for_each
 	for (int i = 0; i < n; i++) {
 		factors[i] /= num;
 	}
