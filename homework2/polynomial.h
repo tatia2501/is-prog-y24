@@ -22,6 +22,7 @@ public:
 	int operator[](int num) const;
 	int& operator[](int num);
 
+	Polynomial& add_and_deduct(const Polynomial& first, const Polynomial& second, int sign);
 	friend Polynomial operator+(const Polynomial& pol1, const Polynomial& pol2);
 	friend Polynomial operator-(const Polynomial& pol1, const Polynomial& pol2);
 	friend Polynomial operator-(const Polynomial& other);
