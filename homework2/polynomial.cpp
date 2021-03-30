@@ -192,9 +192,45 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 	return *this;
 }
 
-//todo without creating new object
+//fixed without creating new object
 Polynomial& Polynomial::operator-=(const Polynomial& other) {
-	*this += (-1) * other;
+	if (n == 0) {
+		*this = other;
+		return *this;
+	}
+	if (other.n == 0) {
+		return *this;
+	}
+	int min, max;
+	if (mindeg < other.mindeg) {
+		min = mindeg;
+	}
+	else min = other.mindeg;
+	if (other.maxdeg < maxdeg) {
+		max = maxdeg;
+	}
+	else max = other.maxdeg;
+
+	int size = max - min + 1;
+	int* help = new int[size];
+	for (int i = 0; i < size; i++) {
+		help[i] = 0;
+	}
+	for (int i = 0; i < n; i++) {
+		help[mindeg - min + i] += factors[i];
+	}
+	for (int i = 0; i < other.n; i++) {
+		help[other.mindeg - min + i] -= other.factors[i];
+	}
+	delete[]factors;
+	factors = new int[size];
+	for (int i = 0; i < size; i++) {
+		factors[i] = help[i];
+	}
+	delete[]help;
+	mindeg = min;
+	maxdeg = max;
+	n = size;
 	return *this;
 }
 
