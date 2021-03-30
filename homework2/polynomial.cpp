@@ -1,6 +1,8 @@
 #include "polynomial.h"
 #include <iostream>
 #include <cmath>
+#include <algorithm>
+
 
 Polynomial::Polynomial() {
 	mindeg = 0;
@@ -94,7 +96,7 @@ int& Polynomial::operator[](int num) {
 		maxdeg = num;
 		n = maxdeg - mindeg + 1;
 		return factors[maxdeg - mindeg];
-	} 
+	}
 	else if (num < mindeg) {
 		int* help = new int[n];
 		for (int i = 0; i < n; i++) {
@@ -153,21 +155,24 @@ Polynomial operator*(const Polynomial& pol1, const Polynomial& pol2) {
 	return res;
 }
 
-Polynomial& Polynomial::operator+=(const Polynomial& other) {
+Polynomial& Polynomial::add_and_deduct(const Polynomial& first, const Polynomial& second, int sign) {
+	*this = first;
 	if (n == 0) {
-		*this = other;
+		*this = second;
 		return *this;
 	}
-	if (other.n == 0) {
+	if (second.n == 0) {
 		return *this;
 	}
 	int min, max;
-	if (mindeg < other.mindeg) {
+	if (mindeg < second.mindeg) {
 		min = mindeg;
-	} else min = other.mindeg;
-	if (other.maxdeg < maxdeg) {
+	}
+	else min = second.mindeg;
+	if (second.maxdeg < maxdeg) {
 		max = maxdeg;
-	} else max = other.maxdeg;
+	}
+	else max = second.maxdeg;
 
 	int size = max - min + 1;
 	int* help = new int[size];
@@ -177,9 +182,15 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 	for (int i = 0; i < n; i++) {
 		help[mindeg - min + i] += factors[i];
 	}
-	for (int i = 0; i < other.n; i++) {
-		help[other.mindeg - min + i] += other.factors[i];
+	if (sign) {
+		for (int i = 0; i < second.n; i++) {
+			help[second.mindeg - min + i] -= second.factors[i];
+		}
+	} 
+	else for (int i = 0; i < second.n; i++) {
+		help[second.mindeg - min + i] += second.factors[i];
 	}
+	
 	delete[]factors;
 	factors = new int[size];
 	for (int i = 0; i < size; i++) {
@@ -192,46 +203,13 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 	return *this;
 }
 
-//todo copy-paste
-Polynomial& Polynomial::operator-=(const Polynomial& other) {
-	if (n == 0) {
-		*this = other;
-		return *this;
-	}
-	if (other.n == 0) {
-		return *this;
-	}
-	int min, max;
-	if (mindeg < other.mindeg) {
-		min = mindeg;
-	}
-	else min = other.mindeg;
-	if (other.maxdeg < maxdeg) {
-		max = maxdeg;
-	}
-	else max = other.maxdeg;
+Polynomial& Polynomial::operator+=(const Polynomial& other) {
+	return(add_and_deduct(*this, other, 0));
+}
 
-	int size = max - min + 1;
-	int* help = new int[size];
-	for (int i = 0; i < size; i++) {
-		help[i] = 0;
-	}
-	for (int i = 0; i < n; i++) {
-		help[mindeg - min + i] += factors[i];
-	}
-	for (int i = 0; i < other.n; i++) {
-		help[other.mindeg - min + i] -= other.factors[i];
-	}
-	delete[]factors;
-	factors = new int[size];
-	for (int i = 0; i < size; i++) {
-		factors[i] = help[i];
-	}
-	delete[]help;
-	mindeg = min;
-	maxdeg = max;
-	n = size;
-	return *this;
+//fixed copy-paste
+Polynomial& Polynomial::operator-=(const Polynomial& other) {
+	return(add_and_deduct(*this, other, 1));
 }
 
 Polynomial& Polynomial::operator*=(const Polynomial& other) {
@@ -277,11 +255,9 @@ Polynomial& Polynomial::operator*=(int num) {
 }
 
 Polynomial& Polynomial::operator/=(int num) {
-	//todo for_each
-	for (int i = 0; i < n; i++) {
-		factors[i] /= num;
-	}
-	*this = zerocheck();
+	//fixed for_each
+	auto inc = [num](int& comp) {comp = comp / num; };
+	std::for_each(factors, factors + n, inc);
 	return *this;
 }
 
