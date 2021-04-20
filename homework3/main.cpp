@@ -15,8 +15,8 @@ struct Stopping {
     double coor1, coor2;
 };
 
-//todo functions from small letter
-void Most_stops_route(const std::vector<Stopping>& vec) {
+//fixed functions from small letter
+void most_stops_route(const std::vector<Stopping>& vec) {
     std::multiset<std::string> routes;
     for (auto i : vec) {
         for (auto j : i.routes) {
@@ -25,8 +25,7 @@ void Most_stops_route(const std::vector<Stopping>& vec) {
     }
     int max = 0;
     std::string max_route;
-    std::multiset<std::string> ::iterator index = routes.begin();
-    for (; index != routes.end(); index++) {
+    for (std::multiset<std::string> ::iterator index = routes.begin(); index != routes.end(); index++) {
         int num = routes.count(*index);
         if (max < num) {
             max = num;
@@ -37,7 +36,7 @@ void Most_stops_route(const std::vector<Stopping>& vec) {
     std::cout << "маршрут " << max_route << " (" << max << " ост.)" << std::endl;
 }
 
-void Longest_route(const std::vector<Stopping>& vec) {
+void longest_route(const std::vector<Stopping>& vec) {
     std::set<std::string> routes;
     for (auto i : vec) {
         for (auto j : i.routes) {
@@ -46,17 +45,17 @@ void Longest_route(const std::vector<Stopping>& vec) {
     }
     std::string max_route;
     std::vector<std::string> routes1;
-    //todo range-based for
-    std::set<std::string> ::iterator index = routes.begin();
-    for (; index != routes.end(); index++) {
+    //fixed range-based for
+    for (std::set<std::string> ::iterator index = routes.begin(); index != routes.end(); index++) {
         routes1.push_back(*index);
     }
 
     double coor1_n = 0, coor2_n = 0;
     std::vector<double> distance(routes1.size(), 0);
-    //todo consts
-    //todo dont use ,
-    double deg_to_km1 = 111.357, deg_to_km2 = 55.8;
+    //fixed consts
+    //fixed dont use ,
+    const double deg_to_km1 = 111.357;
+    const double deg_to_km2 = 55.8;
 
     for (int q = 0; q < routes1.size(); q++) {
         for (auto i : vec) {
@@ -76,35 +75,30 @@ void Longest_route(const std::vector<Stopping>& vec) {
 
     int max = 0;
     for (int q = 0; q < distance.size(); q++) {
-        if (distance[max] < distance[q]) 
-        	max = q;
+        if (distance[max] < distance[q])
+            max = q;
     }
     std::cout << "маршрут " << routes1[max] << " (расстояние: " << distance[max] << "км)" << std::endl;
 }
 
-void Most_stops_street(const std::vector<Stopping>& vec1, const std::vector<Stopping>& vec2, const std::vector<Stopping>& vec3) {
-    std::multiset<std::string> streets;
-    //todo copy-paste
-    for (auto i : vec1) {
+std::multiset<std::string> streets;
+void down_with_copypaste(const std::vector<Stopping>& vec) {
+    for (auto i : vec) {
         for (auto j : i.location) {
             if (j.length() > 1) streets.insert(j);
         }
     }
-    for (auto i : vec2) {
-        for (auto j : i.location) {
-            if (j.length() > 1) streets.insert(j);
-        }
-    }
-    for (auto i : vec3) {
-        for (auto j : i.location) {
-            if (j.length() > 1) streets.insert(j);
-        }
-    }
+}
+
+void most_stops_street(const std::vector<Stopping>& vec1, const std::vector<Stopping>& vec2, const std::vector<Stopping>& vec3) {
+    //fixed copy-paste
+    down_with_copypaste(vec1);
+    down_with_copypaste(vec2);
+    down_with_copypaste(vec3);
 
     int max = 0;
     std::string max_st;
-    std::multiset<std::string> ::iterator index = streets.begin();
-    for (; index != streets.end(); index++) {
+    for (std::multiset<std::string> ::iterator index = streets.begin(); index != streets.end(); index++) {
         int num = streets.count(*index);
         if (max < num) {
             max = num;
@@ -139,15 +133,17 @@ int main() {
                     location.push_back(one_str);
                     one_str.clear();
                     check = 0;
-                } else one_str.append(1, c);
-            } else check = 1;
+                }
+                else one_str.append(1, c);
+            }
+            else check = 1;
         }
         location.push_back(one_str);
         one_str.clear();
 
         std::vector <std::string> routes;
         std::string routes1 = data.child_value("routes");
-        
+
         for (char c : routes1) {
             if (c == ',' || c == '.') {
                 routes.push_back(one_str);
@@ -184,26 +180,26 @@ int main() {
     }
     std::cout << "1. Маршрут с наибольшим количеством остановок" << std::endl;
     std::cout << "Трамвай: ";
-    Most_stops_route(tram_stoppings);
+    most_stops_route(tram_stoppings);
     std::cout << "Троллейбус: ";
-    Most_stops_route(trolley_stoppings);
+    most_stops_route(trolley_stoppings);
     std::cout << "Автобус: ";
-    Most_stops_route(bus_stoppings);
-    
+    most_stops_route(bus_stoppings);
+
     std::cout << std::endl;
 
     std::cout << "2. Наиболее длинный маршрут" << std::endl;
     std::cout << "Трамвай: ";
-    Longest_route(tram_stoppings);
+    longest_route(tram_stoppings);
     std::cout << "Троллейбус: ";
-    Longest_route(trolley_stoppings);
+    longest_route(trolley_stoppings);
     std::cout << "Автобус: ";
-    Longest_route(bus_stoppings);
-    
+    longest_route(bus_stoppings);
+
     std::cout << std::endl;
 
     std::cout << "3. Улица с наибольшим количеством остановок" << std::endl;
-    Most_stops_street(tram_stoppings, trolley_stoppings, bus_stoppings);
+    most_stops_street(tram_stoppings, trolley_stoppings, bus_stoppings);
 
     return 0;
 }
