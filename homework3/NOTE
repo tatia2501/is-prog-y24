@@ -1,0 +1,34 @@
+Pulling https://github.com/tatia2501/IS-2020-prog-2-sem/homework3
+Pull finished
+It's compiled
+Active code page: 65001
+1. Маршрут с наибольшим количеством остановок
+Трамвай: маршрут 27 (74 ост.)
+Троллейбус: маршрут 1 (77 ост.)
+Автобус: маршрут 211 (126 ост.)
+
+2. Наиболее длинный маршрут
+Трамвай: маршрут 6 (расстояние: 238.702км)
+Троллейбус: маршрут 1 (расстояние: 207.006км)
+Автобус: маршрут 487 (расстояние: 1045.99км)
+
+3. Улица с наибольшим количеством остановок
+Приморское ш. (100 ост.)
+
+main.cpp:8: warning: ignoring #pragma execution_character_set  [-Wunknown-pragmas]
+    8 | #pragma execution_character_set("utf-8")
+      | 
+main.cpp: In function 'void Longest_route(const std::vector<Stopping>&)':
+main.cpp:57:23: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<std::__cxx11::basic_string<char> >::size_type' {aka 'unsigned int'} [-Wsign-compare]
+   57 |     for (int q = 0; q < routes1.size(); q++) {
+      |                     ~~^~~~~~~~~~~~~~~~
+main.cpp:74:23: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<double>::size_type' {aka 'unsigned int'} [-Wsign-compare]
+   74 |     for (int q = 0; q < distance.size(); q++) {
+      |                     ~~^~~~~~~~~~~~~~~~~
+main.cpp: In function 'int main()':
+main.cpp:117:28: warning: variable 'result' set but not used [-Wunused-but-set-variable]
+  117 |     pugi::xml_parse_result result = doc.load(stream);
+      |                            ^~~~~~
+
+
+
