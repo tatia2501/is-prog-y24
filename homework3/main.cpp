@@ -15,6 +15,7 @@ struct Stopping {
     double coor1, coor2;
 };
 
+//todo functions from small letter
 void Most_stops_route(const std::vector<Stopping>& vec) {
     std::multiset<std::string> routes;
     for (auto i : vec) {
@@ -45,6 +46,7 @@ void Longest_route(const std::vector<Stopping>& vec) {
     }
     std::string max_route;
     std::vector<std::string> routes1;
+    //todo range-based for
     std::set<std::string> ::iterator index = routes.begin();
     for (; index != routes.end(); index++) {
         routes1.push_back(*index);
@@ -52,6 +54,8 @@ void Longest_route(const std::vector<Stopping>& vec) {
 
     double coor1_n = 0, coor2_n = 0;
     std::vector<double> distance(routes1.size(), 0);
+    //todo consts
+    //todo dont use ,
     double deg_to_km1 = 111.357, deg_to_km2 = 55.8;
 
     for (int q = 0; q < routes1.size(); q++) {
@@ -72,13 +76,15 @@ void Longest_route(const std::vector<Stopping>& vec) {
 
     int max = 0;
     for (int q = 0; q < distance.size(); q++) {
-        if (distance[max] < distance[q]) max = q;
+        if (distance[max] < distance[q]) 
+        	max = q;
     }
     std::cout << "маршрут " << routes1[max] << " (расстояние: " << distance[max] << "км)" << std::endl;
 }
 
 void Most_stops_street(const std::vector<Stopping>& vec1, const std::vector<Stopping>& vec2, const std::vector<Stopping>& vec3) {
     std::multiset<std::string> streets;
+    //todo copy-paste
     for (auto i : vec1) {
         for (auto j : i.location) {
             if (j.length() > 1) streets.insert(j);
