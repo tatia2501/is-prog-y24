@@ -18,19 +18,19 @@ struct Stopping {
 //fixed functions from small letter
 void most_stops_route(const std::vector<Stopping>& vec) {
     std::multiset<std::string> routes;
-    for (auto i : vec) {
-        for (auto j : i.routes) {
+    for (const auto& i : vec) {
+        for (const auto& j : i.routes) {
             routes.insert(j);
         }
     }
     int max = 0;
     std::string max_route;
-    //todo use range-based for
-    for (std::multiset<std::string> ::iterator index = routes.begin(); index != routes.end(); index++) {
-        int num = routes.count(*index);
+    //fixed use range-based for
+    for (const auto& index : routes) {
+        int num = routes.count(index);
         if (max < num) {
             max = num;
-            max_route = *index;
+            max_route = index;
         }
     }
 
@@ -39,34 +39,34 @@ void most_stops_route(const std::vector<Stopping>& vec) {
 
 void longest_route(const std::vector<Stopping>& vec) {
     std::set<std::string> routes;
-    //todo const auto& is better
-    for (auto i : vec) {
-        for (auto j : i.routes) {
+    //fixed const auto& is better
+    for (const auto& i : vec) {
+        for (const auto& j : i.routes) {
             routes.insert(j);
         }
     }
     std::string max_route;
     std::vector<std::string> routes1;
     //fixed range-based for
-    //todo nope, it's still not range-based
-    for (std::set<std::string> ::iterator index = routes.begin(); index != routes.end(); index++) {
-        routes1.push_back(*index);
+    //fixed nope, it's still not range-based
+    for (const auto& index : routes) {
+        routes1.push_back(index);
     }
 
     double coor1_n = 0, coor2_n = 0;
     std::vector<double> distance(routes1.size(), 0);
     //fixed consts
     //fixed dont use ,
-    //todo const CAPS
-    const double deg_to_km1 = 111.357;
-    const double deg_to_km2 = 55.8;
+    //fixed const CAPS
+    const double DEG_TO_KM1 = 111.357;
+    const double DEG_TO_KM2 = 55.8;
 
     for (int q = 0; q < routes1.size(); q++) {
-        for (auto i : vec) {
-            for (auto j : i.routes) {
+        for (const auto& i : vec) {
+            for (const auto& j : i.routes) {
                 if (j == routes1[q]) {
                     if (coor1_n != 0) {
-                        distance[q] += sqrt(pow((i.coor1 - coor1_n) * deg_to_km1, 2) + pow((i.coor2 - coor2_n) * deg_to_km2, 2));
+                        distance[q] += sqrt(pow((i.coor1 - coor1_n) * DEG_TO_KM1, 2) + pow((i.coor2 - coor2_n) * DEG_TO_KM2, 2));
                     }
                     coor1_n = i.coor1;
                     coor2_n = i.coor2;
@@ -87,8 +87,8 @@ void longest_route(const std::vector<Stopping>& vec) {
 
 std::multiset<std::string> streets;
 void down_with_copypaste(const std::vector<Stopping>& vec) {
-    for (auto i : vec) {
-        for (auto j : i.location) {
+    for (const auto& i : vec) {
+        for (const auto& j : i.location) {
             if (j.length() > 1) streets.insert(j);
         }
     }
