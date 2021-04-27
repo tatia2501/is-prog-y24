@@ -25,6 +25,7 @@ void most_stops_route(const std::vector<Stopping>& vec) {
     }
     int max = 0;
     std::string max_route;
+    //todo use range-based for
     for (std::multiset<std::string> ::iterator index = routes.begin(); index != routes.end(); index++) {
         int num = routes.count(*index);
         if (max < num) {
@@ -38,6 +39,7 @@ void most_stops_route(const std::vector<Stopping>& vec) {
 
 void longest_route(const std::vector<Stopping>& vec) {
     std::set<std::string> routes;
+    //todo const auto& is better
     for (auto i : vec) {
         for (auto j : i.routes) {
             routes.insert(j);
@@ -46,6 +48,7 @@ void longest_route(const std::vector<Stopping>& vec) {
     std::string max_route;
     std::vector<std::string> routes1;
     //fixed range-based for
+    //todo nope, it's still not range-based
     for (std::set<std::string> ::iterator index = routes.begin(); index != routes.end(); index++) {
         routes1.push_back(*index);
     }
@@ -54,6 +57,7 @@ void longest_route(const std::vector<Stopping>& vec) {
     std::vector<double> distance(routes1.size(), 0);
     //fixed consts
     //fixed dont use ,
+    //todo const CAPS
     const double deg_to_km1 = 111.357;
     const double deg_to_km2 = 55.8;
 
