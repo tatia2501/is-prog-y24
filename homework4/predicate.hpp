@@ -73,9 +73,9 @@ bool isPartitioned(ForwardIterator begin, ForwardIterator end, const UnaryPredic
 };
 
 template <class InputIterator, class T>
-InputIterator findNot(InputIterator begin, InputIterator end, const T& value) {
+InputIterator findNot(InputIterator begin, InputIterator end, const T& num) {
 	while (begin != end) {
-		if (*begin != value) {
+		if (*begin != num) {
 			return begin;
 		}
 		++begin;
@@ -84,10 +84,10 @@ InputIterator findNot(InputIterator begin, InputIterator end, const T& value) {
 };
 
 template <class InputIterator, class T>
-InputIterator findBackward(InputIterator begin, InputIterator end, const T& value) {
+InputIterator findBackward(InputIterator begin, InputIterator end, const T& num) {
 	InputIterator ans = end;
 	while (begin != end) {
-		if (*begin == value) {
+		if (*begin == num) {
 			ans = begin;
 		}
 		++begin;
