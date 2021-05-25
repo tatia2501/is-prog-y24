@@ -3,7 +3,7 @@
 #include <algorithm>
 
 using namespace std;
-
+//todo warnings
 template <class T>
 class CircularBuffer {
 private:
@@ -106,7 +106,7 @@ public:
         capacity = num;
         buffer = new T[capacity];
     }
-
+    //todo information of index and size in exceptions
     T& operator[](int i) {
         int size2 = buf_size;
         if (i >= size2) {
