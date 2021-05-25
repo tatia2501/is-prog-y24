@@ -1,0 +1,33 @@
+Pulling https://github.com/tatia2501/IS-2020-prog-2-sem/homework5
+Pull finished
+It's compiled
+Index out of range
+2
+Index out of range
+Everything is ok
+
+In file included from main.cpp:10:
+CircularBuffer.hpp: In instantiation of 'CircularBuffer<T>::Iterator::Iterator(T*, T*, size_t, size_t, int) [with T = int; size_t = unsigned int]':
+CircularBuffer.hpp:199:20:   required from 'CircularBuffer<T>::Iterator CircularBuffer<T>::begin() const [with T = int]'
+main.cpp:65:30:   required from here
+CircularBuffer.hpp:20:12: warning: 'CircularBuffer<int>::Iterator::point' will be initialized after [-Wreorder]
+   20 |         T* point;
+      |            ^~~~~
+CircularBuffer.hpp:19:12: warning:   'int* CircularBuffer<int>::Iterator::buf' [-Wreorder]
+   19 |         T* buf;
+      |            ^~~
+CircularBuffer.hpp:31:9: warning:   when initialized here [-Wreorder]
+   31 |         Iterator(T* point, T* b, size_t p, size_t t, int c)
+      |         ^~~~~~~~
+CircularBuffer.hpp:23:16: warning: 'CircularBuffer<int>::Iterator::tail' will be initialized after [-Wreorder]
+   23 |         size_t tail{};
+      |                ^~~~
+CircularBuffer.hpp:21:13: warning:   'int CircularBuffer<int>::Iterator::capacity' [-Wreorder]
+   21 |         int capacity{};
+      |             ^~~~~~~~
+CircularBuffer.hpp:31:9: warning:   when initialized here [-Wreorder]
+   31 |         Iterator(T* point, T* b, size_t p, size_t t, int c)
+      |         ^~~~~~~~
+
+
+
