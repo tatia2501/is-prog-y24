@@ -1,26 +1,27 @@
 #include <iostream>
 #include <iterator>
 #include <algorithm>
+#include <string>
 
 using namespace std;
-//todo warnings
+//fixed warnings (i hope)
 template <class T>
 class CircularBuffer {
 private:
-    T* buffer;
-    size_t capacity = 0;
     size_t buf_size = 0;
+    size_t capacity = 0;
     size_t head = 0;
     size_t tail = 0;
+    T* buffer;
 
 public:
     class Iterator {
     private:
+        T* ptr;
         T* buf;
-        T* point;
-        int capacity{};
         size_t position{};
-        size_t tail{};
+        size_t ending{};
+        int tonnage{};
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = T;
@@ -28,13 +29,13 @@ public:
         using pointer = value_type*;
         using reference = value_type&;
 
-        Iterator(T* point, T* b, size_t p, size_t t, int c)
-            : point(point), buf(b), position(p), tail(t), capacity(c) {}
+        Iterator(T* ptr, T* b, size_t p, size_t t, int c)
+            : ptr(ptr), buf(b), position(p), ending(t), tonnage(c) {}
 
         Iterator() : buf(nullptr) {}
 
         T& operator*() {
-            return buf[(tail - position) % capacity];
+            return buf[(ending - position) % tonnage];
         }
 
         T* operator-> () const {
@@ -42,37 +43,37 @@ public:
         }
 
         Iterator& operator+= (int num) {
-            point += num;
+            ptr += num;
             position += num;
             return *this;
         }
 
         Iterator& operator-= (int num) {
-            point -= num;
+            ptr -= num;
             position -= num;
             return *this;
         }
 
         Iterator operator+ (int num) {
-            return Iterator(point + num, buf, position + num, tail, capacity);
+            return Iterator(ptr + num, buf, position + num, ending, tonnage);
         }
 
         Iterator operator- (int num) {
-            return Iterator(point - num, buf, position - num, tail, capacity);
+            return Iterator(ptr - num, buf, position - num, ending, tonnage);
         }
 
         difference_type operator- (Iterator it) {
-            return point - it.point;
+            return ptr - it.ptr;
         }
 
         Iterator& operator++ () {
-            point++;
+            ptr++;
             position++;
             return *this;
         }
 
         Iterator& operator--() {
-            point--;
+            ptr--;
             position--;
             return *this;
         }
@@ -100,17 +101,20 @@ public:
         bool operator!= (const Iterator& t) const {
             return position != t.position;
         }
+
     };
 
     explicit CircularBuffer(T num) {
         capacity = num;
         buffer = new T[capacity];
     }
-    //todo information of index and size in exceptions
+
+    //fixed information of index and size in exceptions
     T& operator[](int i) {
         int size2 = buf_size;
         if (i >= size2) {
-            throw std::out_of_range("Index out of range");
+            string info = "Index " + std::to_string(i) + " is out of range. Max index -  " + std::to_string(size2 - 1);
+            throw std::out_of_range(info);
         }
         return buffer[(tail - 1 - i) % capacity];
     }
@@ -118,7 +122,8 @@ public:
     T operator[](int i) const {
         int size2 = buf_size;
         if (i >= size2) {
-            throw std::out_of_range("Index out of range");
+            string info = "Index " + std::to_string(i) + " is out of range. Max index -  " + std::to_string(size2 - 1);
+            throw std::out_of_range(info);
         }
         return buffer[(tail - 1 - i) % capacity];
     }
@@ -175,17 +180,17 @@ public:
     }
 
     void changeCapacity(int new_capacity) {
-        int c = 0;
+        int count = 0;
         int capacity2 = capacity;
         T* tmp = new T[capacity];
         for (int i = head; i < capacity2; i++) {
-            tmp[c] = buffer[i];
-            c++;
+            tmp[count] = buffer[i];
+            count++;
         }
         int tail2 = tail;
         for (int i = 0; i < tail2; i++) {
-            tmp[c] = buffer[i];
-            c++;
+            tmp[count] = buffer[i];
+            count++;
         }
         head = 0;
         tail = buf_size;
