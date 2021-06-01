@@ -104,7 +104,7 @@ public:
 
     };
 
-    explicit CircularBuffer(size_T num) {
+    explicit CircularBuffer(size_t num) {
         capacity = num;
         buffer = new T[capacity];
     }
