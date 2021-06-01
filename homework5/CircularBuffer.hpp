@@ -4,7 +4,7 @@
 #include <string>
 
 using namespace std;
-//fixed warnings (i hope)
+//fixed warnings
 template <class T>
 class CircularBuffer {
 private:
