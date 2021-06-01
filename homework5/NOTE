@@ -1,33 +1,23 @@
 Pulling https://github.com/tatia2501/IS-2020-prog-2-sem/homework5
 Pull finished
-It's compiled
-Index out of range
-2
-Index out of range
-Everything is ok
-
+main.cpp: In function 'int main()':
+main.cpp:203:32: error: no matching function for call to 'CircularBuffer<std::__cxx11::basic_string<char> >::CircularBuffer(int)'
+  203 |     CircularBuffer<string> cs(4);
+      |                                ^
 In file included from main.cpp:10:
-CircularBuffer.hpp: In instantiation of 'CircularBuffer<T>::Iterator::Iterator(T*, T*, size_t, size_t, int) [with T = int; size_t = unsigned int]':
-CircularBuffer.hpp:199:20:   required from 'CircularBuffer<T>::Iterator CircularBuffer<T>::begin() const [with T = int]'
-main.cpp:65:30:   required from here
-CircularBuffer.hpp:20:12: warning: 'CircularBuffer<int>::Iterator::point' will be initialized after [-Wreorder]
-   20 |         T* point;
-      |            ^~~~~
-CircularBuffer.hpp:19:12: warning:   'int* CircularBuffer<int>::Iterator::buf' [-Wreorder]
-   19 |         T* buf;
-      |            ^~~
-CircularBuffer.hpp:31:9: warning:   when initialized here [-Wreorder]
-   31 |         Iterator(T* point, T* b, size_t p, size_t t, int c)
-      |         ^~~~~~~~
-CircularBuffer.hpp:23:16: warning: 'CircularBuffer<int>::Iterator::tail' will be initialized after [-Wreorder]
-   23 |         size_t tail{};
-      |                ^~~~
-CircularBuffer.hpp:21:13: warning:   'int CircularBuffer<int>::Iterator::capacity' [-Wreorder]
-   21 |         int capacity{};
-      |             ^~~~~~~~
-CircularBuffer.hpp:31:9: warning:   when initialized here [-Wreorder]
-   31 |         Iterator(T* point, T* b, size_t p, size_t t, int c)
-      |         ^~~~~~~~
+CircularBuffer.hpp:107:14: note: candidate: 'CircularBuffer<T>::CircularBuffer(T) [with T = std::__cxx11::basic_string<char>]'
+  107 |     explicit CircularBuffer(T num) {
+      |              ^~~~~~~~~~~~~~
+CircularBuffer.hpp:107:31: note:   no known conversion for argument 1 from 'int' to 'std::__cxx11::basic_string<char>'
+  107 |     explicit CircularBuffer(T num) {
+      |                             ~~^~~
+CircularBuffer.hpp:9:7: note: candidate: 'constexpr CircularBuffer<std::__cxx11::basic_string<char> >::CircularBuffer(const CircularBuffer<std::__cxx11::basic_string<char> >&)'
+    9 | class CircularBuffer {
+      |       ^~~~~~~~~~~~~~
+CircularBuffer.hpp:9:7: note:   no known conversion for argument 1 from 'int' to 'const CircularBuffer<std::__cxx11::basic_string<char> >&'
+CircularBuffer.hpp:9:7: note: candidate: 'constexpr CircularBuffer<std::__cxx11::basic_string<char> >::CircularBuffer(CircularBuffer<std::__cxx11::basic_string<char> >&&)'
+CircularBuffer.hpp:9:7: note:   no known conversion for argument 1 from 'int' to 'CircularBuffer<std::__cxx11::basic_string<char> >&&'
+make: *** [makefile:2: all] Error 1
 
 
 
