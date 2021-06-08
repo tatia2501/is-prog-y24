@@ -1774,9 +1774,11 @@ public:
 
 int main() {
     cout << "Test 1" << endl;
+    //The Rubik's cube is taken from file, displayed in console, assembled (state at different steps is displayed in console), solution is displayed as a sequence of turns of faces
     example.go1();
     cout << endl;
     cout << "Test 2" << endl;
+    //The Rubik's cube is taken randomly, saved in file, displayed in console, rotation of left face for 3 times is shown, cube's assembled (state at different steps is displayed in console), solution is displayed as a sequence of turns of faces
     example.go2();
     return 0;
 }
